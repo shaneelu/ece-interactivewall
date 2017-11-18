@@ -1,0 +1,6 @@
+To login, open Terminal:
+
+	ssh pi@192.168.4.186
+
+Password is "raspberry".
+Make sure you are on CornellCup-Web, because that is what the Pi is connected to.
