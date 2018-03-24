@@ -1,6 +1,23 @@
 import RPi.GPIO as GPIO
 from time import sleep
 
+import serial
+import wiringpi2 as wiringpi
+
+serial = serial.Serial("/dev/ttyUSB0", baudrate=9600)
+  
+from time import sleep  
+# wiringpi.wiringPiSetupGpio()  
+# wiringpi.pinMode(24, 1)  # sets GPIO 24 to output
+# wiringpi.digitalWrite(24, 1) # sets port 24 to 1 (3V3, on)
+
+
+code = ''
+direction =0
+number = 0
+
+dictionary = {'59004312D': 'move forward','590045F232DC' : 'endtag', '59004312DDD5': 'move forward'}
+
 GPIO.setmode(GPIO.BCM)
 
 #Buttons Setup
@@ -95,6 +112,7 @@ def moveVerticalUp(num):
         sleep(delay) 
         GPIO.output(stepPin2, GPIO.LOW)
         sleep(delay)
+    print('sleep pin 2')
     GPIO.output(sleepPin2, GPIO.LOW)
 
 def moveVerticalDown(num):
@@ -138,32 +156,55 @@ def moveHorizontalDown(num):
 
 while(1):
 
-    command = raw_input("Enter command: ")
-    steps = input("Enter number of steps: ")
-
+    #command = raw_input("Enter command: ")
+    #steps = input("Enter number of steps: ")
+    command = ''
+    steps = 0
     if command == "move scanner up":
        moveScannerUp(steps)
-       print "moveSca"
 
     if command == "move scanner down":
        moveScannerDown(steps)
-       print "moveSca"
        
     if command == "move vertical up":
        moveVerticalUp(steps)
-       print "moveSca"
        
     if command == "move vertical down":
        moveVerticalDown(steps)
-       print "moveSca"
        
     if command == "move horizontal up":
        moveHorizontalUp(steps)
-       print "moveSca"
        
     if command == "move horizontal down":
        moveHorizontalDown(steps)
-       print "moveSca"    
-       
+    
+    if(number ==0):
+        moveScannerDown(2000)
+    number = number+1
+    data = serial.read()
+    if data == '\r':
+        print('in if')
+        print(code)
+        code = ''
+    else:
+        print('in else')
+        code = code + data
+        if (len(code) == 11):
+        	code = code[1:]
+        	        	
+	# resetReader()
+    if(len(code)>9 and dictionary[code[1:11]] == 'move forward'):
+        if(direction == 0): moveVerticalUp(2000)
+        elif(direction==1): moveHorizontalUp(2000)
+        elif(direction==2): moveVerticalDown(2000)
+        else: moveHorizontalDown(2000)
+		
+		
+def resetReader():
+	# wiringpi.digitalWrite(24, 0) # sets port 24 to 0 (0V, off)  #low
+	sleep(10)                    # wait 10s  
+	# wiringpi.digitalWrite(24, 1) # sets port 24 to 1 (3V3, on) #high
+	sleep(10)                    # wait 10s  
+
 
 
