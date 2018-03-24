@@ -10,6 +10,9 @@ from time import sleep
 
 
 code = ''
+endtag= '590045F232DC'
+movetag1= '590043419BC0'
+movetag2 = '59004312DDD5'
 
 while True:
     data = serial.read()
