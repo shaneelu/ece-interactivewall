@@ -10,8 +10,10 @@ def stop():
 
 GPIO.add_event_detect(bottom_scan_pin, GPIO.RISING, callback=stop, bouncetime=2000)
 GPIO.add_event_detect(top_scan_pin, GPIO.RISING, callback=stop, bouncetime=2000)
+#add interrupt and handler for start and reset button
 
-def reset():
+#the following method isn't needed once CS is integrated
+def reset(): #motor 
     moveScannerUp(10000)
     moveScannerDown(200) #release from pressing the switch
     moveVerticalUp(10000)
