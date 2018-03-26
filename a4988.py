@@ -194,10 +194,10 @@ while(1):
         	        	
 	# resetReader()
     if(len(code)>9 and dictionary[code[1:11]] == 'move forward'):
-        if(direction == 0): moveVerticalUp(2000)
-        elif(direction==1): moveHorizontalUp(2000)
-        elif(direction==2): moveVerticalDown(2000)
-        else: moveHorizontalDown(2000)
+        if(direction == 0): moveHorizontalUp(1000)
+        elif(direction==1): moveVerticalUp(1000)
+        elif(direction==2): moveHorizontalDown(1000)
+        else: moveVerticalDown(1000)
 		
 		
 def resetReader():
